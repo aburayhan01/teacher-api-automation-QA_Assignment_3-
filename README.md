@@ -1,133 +1,139 @@
-# Teacher API Automation Framework
+# Teacher API Automation Framework (Pytest)
 
-A Pytest-based API automation framework for Teacher APIs, built following the same style and structure as the Student API project.
+## Project Overview
+
+This project demonstrates API automation testing for a Teacher Management API using Pytest and Requests library.
+The framework performs full CRUD operations (Create, Read, Update, Delete) and validates responses using proper assertions.
+pytest-html is used to generate an HTML test report after every test execution.
+
+---
+
+## Tools & Technologies
+
+- Python
+- Pytest
+- Requests
+- python-dotenv
+- Faker
+- pytest-html
+- GitHub
 
 ---
 
 ## Project Structure
 
-```
-teacher_api_framework/
-│
-├── utils/
-│   ├── config.py            # Loads BASE_URL, USERNAME, PASSWORD from .env
-│   └── helper_function.py   # All reusable functions (login, CRUD helpers)
-│
-├── testcases/
-│   ├── conftest.py          # Shared fixtures (auth_headers, teacher_payload, schema)
-│   ├── test_login.py        # Login tests (valid, invalid, empty credentials)
-│   ├── test_post_teacher.py # Create teacher tests
-│   ├── test_get_teacher.py  # Get teacher tests (all, by ID, by name)
-│   ├── test_update_teacher.py # Update teacher tests
-│   └── test_delete_teacher.py # Delete teacher tests
-│
-├── reports/                 # HTML reports generated here (auto-created)
-├── .env                     # Your credentials — never commit this!
-├── .env.example             # Template for .env
-├── pytest.ini               # Pytest configuration
-├── requirements.txt         # Python dependencies
-└── README.md
-```
+<img width="374" height="730" alt="image" src="https://github.com/user-attachments/assets/f216e40c-b528-4762-93e6-0ae4f3df15e0" />
 
----
 
-## Setup Instructions
+## How to Run the Project
 
-### 1. Clone the repository
-```bash
-git clone https://github.com/<your-username>/teacher-api-automation.git
-cd teacher-api-automation
-```
+### 1. Clone the Repository
 
-### 2. Create and activate virtual environment
-```bash
-# macOS / Linux
-python3 -m venv venv
-source venv/bin/activate
+git clone https://github.com/aburayhan01/teacher-api-automation-QA_Assignment_3-.git
+cd teacher-api-automation-QA_Assignment_3-
 
-# Windows
-python -m venv venv
-venv\Scripts\activate
-```
+### 2. Create and Activate Virtual Environment
 
-### 3. Install dependencies
-```bash
+Windows:
+python -m venv .venv
+.venv\Scripts\activate
+
+macOS / Linux:
+python3 -m venv .venv
+source .venv/bin/activate
+
+### 3. Install Dependencies
+
 pip install -r requirements.txt
-```
 
-### 4. Set up environment file
-```bash
-cp .env.example .env
-```
+### 4. Set Up Environment File
 
-Open `.env` and fill in your values:
-```
+Create a .env file in the project root:
+
 BASE_URL=http://54.255.195.111:5171
-API_USERNAME=your_email@example.com
+API_USERNAME=your_username
 API_PASSWORD=your_password
-```
 
-> ⚠️ Never commit `.env` to GitHub. It is listed in `.gitignore`.
+Note: Never commit .env to GitHub. It is listed in .gitignore.
 
----
+### 5. Run All Tests
 
-## How to Run Tests
+pytest -v -s
 
-### Run all tests
-```bash
-pytest
-```
+### 6. Run a Specific Test File
 
-### Run a specific test file
-```bash
 pytest testcases/test_post_teacher.py
-```
 
-### Run a specific test function
-```bash
+### 7. Run a Specific Test Function
+
 pytest testcases/test_delete_teacher.py::test_delete_teacher_by_id
-```
-
-### Run with detailed output
-```bash
-pytest -v
-```
 
 ---
 
-## Test Report
+## Generate & View HTML Report
 
-HTML report is auto-generated after every run:
+The HTML report is auto-generated after every test run inside the reports/ folder.
 
-```
-reports/test_report.html
-```
+To generate:
+pytest -v -s
 
-Open it in your browser:
-```bash
-# macOS
+To view on Windows:
+start reports/test_report.html
+
+To view on macOS:
 open reports/test_report.html
 
-# Windows
-start reports/test_report.html
-```
+---
+
+## Test Cases
+
+### Authentication
+- Login with valid credentials → Status 200, token returned
+- Login with wrong password → Status 401, token not returned
+- Login with empty credentials → Status 400/401
+
+### Create Teacher (POST)
+- Create teacher with all valid fields → Status 200/201, response matches request
+- Created teacher exists in list → Email found in GET all response
+- Create teacher with missing name → Status 400/422
+- Create teacher with invalid email → Status 400/422
+- Create without token → Status 401/403
+
+### Get Teacher (GET)
+- Get all teachers → Status 200, schema validated
+- Get teacher by valid teacherId → Status 200, correct data returned
+- Get teacher by non-existent ID → Status 404
+- Get teacher by name filter → Status 200, matching teacher returned
+- Get all without token → Status 401/403
+
+### Update Teacher (PUT)
+- Update teacher email → Status 200, new email in list, old email gone
+- Update non-existent teacher → Status 400/404
+- Update without token → Status 401/403
+
+### Delete Teacher (DELETE)
+- Delete existing teacher → Status 200/204
+- After deletion GET by ID returns 404
+- Delete non-existent teacher → Status 404
+- Delete same teacher twice → Second attempt returns 404
+- Delete without token → Status 401/403
 
 ---
 
-## Test Coverage
+## Test Coverage Summary
 
-| File | Tests | What is covered |
-|------|-------|-----------------|
-| `test_login.py` | 3 | Valid login, wrong password, empty credentials |
-| `test_post_teacher.py` | 5 | Create valid, check in list, missing name, invalid email, no token |
-| `test_get_teacher.py` | 5 | Get all + schema check, by ID, 404, by name, no token |
-| `test_update_teacher.py` | 3 | Email update + list check, non-existent ID, no token |
-| `test_delete_teacher.py` | 4 | Delete + verify gone, non-existent, double delete, no token |
+File                       Tests    Result
+test_login.py                3      Passed
+test_post_teacher.py         5      Passed
+test_get_teacher.py          5      Passed
+test_update_teacher.py       3      Passed
+test_delete_teacher.py       4      Passed
 
-**Total: 20 test cases**
+Total: 20 test cases - All Passed
 
 ---
 
-## API Source
+## Author
 
-http://54.255.195.111:5171/api-docs/#/
+Abu Rayhan
+GitHub: https://github.com/aburayhan01
