@@ -29,60 +29,72 @@ pytest-html is used to generate an HTML test report after every test execution.
 
 ### 1. Clone the Repository
 
+```bash
 git clone https://github.com/aburayhan01/teacher-api-automation-QA_Assignment_3-.git
 cd teacher-api-automation-QA_Assignment_3-
+```
 
 ### 2. Create and Activate Virtual Environment
 
 Windows:
+```bash
 python -m venv .venv
 .venv\Scripts\activate
-
+```
 macOS / Linux:
+```bash
 python3 -m venv .venv
 source .venv/bin/activate
+```
 
 ### 3. Install Dependencies
-
+```bash
 pip install -r requirements.txt
+```
 
 ### 4. Set Up Environment File
 
-Create a .env file in the project root:
-
+Create a `.env` file in the project root:
+```
 BASE_URL=http://54.255.195.111:5171
 API_USERNAME=your_username
 API_PASSWORD=your_password
-
-Note: Never commit .env to GitHub. It is listed in .gitignore.
+```
+> Note: Never commit `.env` to GitHub. It is listed in `.gitignore`.
 
 ### 5. Run All Tests
-
+```bash
 pytest -v -s
+```
 
 ### 6. Run a Specific Test File
-
+```bash
 pytest testcases/test_post_teacher.py
+```
 
 ### 7. Run a Specific Test Function
-
+```bash
 pytest testcases/test_delete_teacher.py::test_delete_teacher_by_id
+```
 
 ---
 
 ## Generate & View HTML Report
 
-The HTML report is auto-generated after every test run inside the reports/ folder.
+The HTML report is auto-generated after every test run inside the `reports/` folder.
 
 To generate:
+```bash
 pytest -v -s
-
+```
 To view on Windows:
+```bash
 start reports/test_report.html
-
+```
 To view on macOS:
+```bash
 open reports/test_report.html
-
+```
 ---
 
 ## Test Cases
@@ -122,14 +134,15 @@ open reports/test_report.html
 
 ## Test Coverage Summary
 
-File                       Tests    Result
-test_login.py                3      Passed
-test_post_teacher.py         5      Passed
-test_get_teacher.py          5      Passed
-test_update_teacher.py       3      Passed
-test_delete_teacher.py       4      Passed
+| File | Tests | Result |
+|------|-------|--------|
+| test_login.py | 3 | ✅ Passed |
+| test_post_teacher.py | 5 | ✅ Passed |
+| test_get_teacher.py | 5 | ✅ Passed |
+| test_update_teacher.py | 3 | ✅ Passed |
+| test_delete_teacher.py | 4 | ✅ Passed |
 
-Total: 20 test cases - All Passed
+**Total: 20 test cases — All Passed ✅**
 
 ---
 
