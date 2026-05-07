@@ -1,4 +1,9 @@
-# Teacher API Automation Framework (Pytest)
+# Teacher Management API Automation Framework
+
+[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![Pytest](https://img.shields.io/badge/Tested%20with-Pytest-yellow.svg)](https://docs.pytest.org/)
+[![Allure](https://img.shields.io/badge/Report-Allure-brightgreen.svg)](https://docs.qameta.io/allure/)
+[![Requests](https://img.shields.io/badge/Library-Requests-orange.svg)](https://requests.readthedocs.io/)
 
 ## Project Overview
 
@@ -19,11 +24,37 @@ pytest-html is used to generate an HTML test report after every test execution.
 - GitHub
 
 ---
+## 📂 Project Structure
 
-## Project Structure
-
-<img width="374" height="730" alt="image" src="https://github.com/user-attachments/assets/f216e40c-b528-4762-93e6-0ae4f3df15e0" />
-
+```text
+teacher_api_framework/
+│
+├── .venv/                     # Virtual environment
+│
+├── teacher_api_framework/     # Main project package
+│   ├── allure-results/        # Allure raw results (JSON)
+│   ├── reports/               # HTML test reports output
+│   │
+│   ├── testcases/             # Test scripts
+│   │   ├── __init__.py
+│   │   ├── conftest.py        # Fixtures & global setup
+│   │   ├── test_login.py
+│   │   ├── test_post_teacher.py
+│   │   ├── test_get_teacher.py
+│   │   ├── test_update_teacher.py
+│   │   └── test_delete_teacher.py
+│   │
+│   ├── utils/                # Helper & config layer
+│   │   ├── __init__.py
+│   │   ├── config.py         # Base URL & environment config
+│   │   └── helper_function.py # Reusable API functions
+│   │
+│   ├── .env                  # Sensitive data (tokens, credentials)
+│   ├── .gitignore            # Ignored files list
+│   ├── pytest.ini            # Pytest configuration
+│   └── requirements.txt      # Project dependencies
+```
+------
 
 ## How to Run the Project
 
@@ -77,8 +108,6 @@ pytest testcases/test_post_teacher.py
 pytest testcases/test_delete_teacher.py::test_delete_teacher_by_id
 ```
 
----
-
 ## Generate & View HTML Report
 
 The HTML report is auto-generated after every test run inside the `reports/` folder.
@@ -95,6 +124,46 @@ To view on macOS:
 ```bash
 open reports/test_report.html
 ```
+<img width="1902" height="872" alt="Screenshot 2026-05-07 234449" src="https://github.com/user-attachments/assets/1a90daeb-e71f-47c9-bdfb-aa5e669fb052" />
+
+
+---
+
+
+## Generate & View Allure Report
+
+The Allure report is generated after every test run and stored inside the `allure-results/` folder. The final report can be viewed using the Allure server.
+
+### Generate Allure Results:
+```bash
+pytest -v -s --alluredir=allure-results
+```
+###View Allure Report:
+```bash
+allure serve allure-results
+```
+##  Allure Test Report Dashboard
+
+### 📌 Executive Overview (Allure Summary)
+This section provides a high-level snapshot of the overall test execution status, including pass/fail ratio, execution health, and stability insights.
+
+<img width="1916" height="891" alt="Allure Overview" src="https://github.com/user-attachments/assets/e3e5fcc2-d05a-46c4-a76f-649d93bd5a44" />
+
+---
+
+###  Test Execution Trends & Graphical Analysis
+Visual representation of test execution metrics including duration, status distribution, and performance trends across the test suite.
+
+<img width="1919" height="1071" alt="Graphical Analysis" src="https://github.com/user-attachments/assets/26a30c39-ad84-40a4-af2b-0003f264b48e" />
+
+---
+
+###  Test Suite & Category Breakdown
+Detailed breakdown of test cases organized by functional modules and test categories for better traceability and coverage analysis.
+
+<img width="1120" height="1079" alt="image" src="https://github.com/user-attachments/assets/f1bf31ef-9c9e-4b09-9a6f-ea16bff46cfd" />
+
+
 ---
 
 ## Test Cases
@@ -124,10 +193,8 @@ open reports/test_report.html
 - Update without token → Status 401/403
 
 ### Delete Teacher (DELETE)
-- Delete existing teacher → Status 200/204
 - After deletion GET by ID returns 404
 - Delete non-existent teacher → Status 404
-- Delete same teacher twice → Second attempt returns 404
 - Delete without token → Status 401/403
 
 ---
@@ -140,9 +207,9 @@ open reports/test_report.html
 | test_post_teacher.py | 5 | ✅ Passed |
 | test_get_teacher.py | 5 | ✅ Passed |
 | test_update_teacher.py | 3 | ✅ Passed |
-| test_delete_teacher.py | 4 | ✅ Passed |
+| test_delete_teacher.py | 3 | ✅ Passed |
 
-**Total: 20 test cases — All Passed ✅**
+**Total: 19 test cases — All Passed ✅**
 
 ---
 
