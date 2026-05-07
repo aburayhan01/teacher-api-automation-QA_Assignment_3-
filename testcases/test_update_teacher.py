@@ -1,10 +1,11 @@
+import pytest
 import requests
 from utils.config import BASE_URL
 from utils.helper_function import create_teacher, get_all_teachers, update_teacher, delete_teacher
 
 
 def test_update_teacher_email_reflects_in_list(auth_headers, teacher_payload):
-    """After updating email, old email should be gone and new email should appear in list."""
+
     # Step 1: Create teacher
     post_response = create_teacher(BASE_URL, teacher_payload, auth_headers)
     assert post_response.status_code in [200, 201], \
@@ -36,6 +37,7 @@ def test_update_teacher_email_reflects_in_list(auth_headers, teacher_payload):
         f"Update failed. Response: {update_response.text}"
 
     # Step 4: Verify new email in list, old email gone
+
     get_response_after = get_all_teachers(BASE_URL, auth_headers)
     teachers_after = get_response_after.json()
     emails_after = [teacher["email"] for teacher in teachers_after]
@@ -53,8 +55,8 @@ def test_update_teacher_email_reflects_in_list(auth_headers, teacher_payload):
 
 
 def test_update_nonexistent_teacher_returns_error(auth_headers):
-    """PUT with a non-existent ID should return 404."""
-    fake_id = "000000000000000000000000"
+
+    fake_id = 9999999999
 
     updated_payload = {
         "name": "Ghost Teacher",
@@ -73,7 +75,7 @@ def test_update_nonexistent_teacher_returns_error(auth_headers):
 
 
 def test_update_teacher_without_token(auth_headers, teacher_payload):
-    """PUT without Authorization header must be rejected."""
+
     post_response = create_teacher(BASE_URL, teacher_payload, auth_headers)
     assert post_response.status_code in [200, 201]
 

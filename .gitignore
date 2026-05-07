@@ -2,7 +2,9 @@
 __pycache__/
 .pytest_cache/
 reports/
+allure-results/
 venv/
 .venv/
+.idea/
 *.pyc
 .DS_Store

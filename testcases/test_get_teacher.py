@@ -1,10 +1,10 @@
+import pytest
 import requests
 from utils.config import BASE_URL
 from utils.helper_function import create_teacher, get_all_teachers, get_teacher_by_id, delete_teacher
 
 
-def test_get_all_teachers_status_and_schema(auth_headers, teacher_schema):
-    """GET /api/teacher should return 200 and each teacher must match the schema."""
+def test_get_all_teachers(auth_headers, teacher_schema):
     response = get_all_teachers(BASE_URL, auth_headers)
 
     assert response.status_code == 200, \
@@ -23,13 +23,12 @@ def test_get_all_teachers_status_and_schema(auth_headers, teacher_schema):
 
 
 def test_get_teacher_by_valid_id(auth_headers, teacher_payload):
-    """GET /api/teacher/{teacherId} should return the correct teacher."""
+
     post_response = create_teacher(BASE_URL, teacher_payload, auth_headers)
     assert post_response.status_code in [200, 201], \
         f"Teacher creation failed. Response: {post_response.text}"
 
-    teacher_id = post_response.json()["teacherId"]  # numeric teacherId
-    mongo_id = post_response.json()["_id"]
+    teacher_id = post_response.json()["teacherId"]
 
     get_response = get_teacher_by_id(BASE_URL, teacher_id, auth_headers)
 
@@ -43,12 +42,10 @@ def test_get_teacher_by_valid_id(auth_headers, teacher_payload):
 
     print(f"Teacher with teacherId {teacher_id} retrieved successfully")
 
-    # Cleanup
     delete_teacher(BASE_URL, teacher_id, auth_headers)
 
 
 def test_get_teacher_by_nonexistent_id(auth_headers):
-    """GET /api/teacher/{teacherId} with a fake ID should return 404."""
     fake_id = 999999999
 
     response = get_teacher_by_id(BASE_URL, fake_id, auth_headers)
@@ -60,16 +57,15 @@ def test_get_teacher_by_nonexistent_id(auth_headers):
 
 
 def test_get_teacher_by_name(auth_headers, teacher_payload):
-    """GET /api/teacher?name=<name> should return the matching teacher."""
     post_response = create_teacher(BASE_URL, teacher_payload, auth_headers)
     assert post_response.status_code in [200, 201], \
         f"Teacher creation failed. Response: {post_response.text}"
 
     teacher_id = post_response.json()["teacherId"]
-    name_to_search = teacher_payload["name"]
+    search_name = teacher_payload["name"]
 
     response = requests.get(
-        url=f"{BASE_URL}/api/teacher?name={name_to_search}",
+        url=f"{BASE_URL}/api/teacher?name={search_name}",
         headers=auth_headers
     )
 
@@ -79,17 +75,15 @@ def test_get_teacher_by_name(auth_headers, teacher_payload):
     assert len(data) > 0, "No teacher returned for given name"
 
     for teacher in data:
-        assert teacher["name"] == name_to_search, \
-            f"Expected name '{name_to_search}', got '{teacher['name']}'"
+        assert teacher["name"] == search_name, \
+            f"Expected name '{search_name}', got '{teacher['name']}'"
 
-    print(f"Teacher with name '{name_to_search}' found successfully")
+    print(f"Teacher with name '{search_name}' found successfully")
 
-    # Cleanup
     delete_teacher(BASE_URL, teacher_id, auth_headers)
 
 
 def test_get_all_teachers_without_token():
-    """GET /api/teacher without token should be rejected."""
     response = requests.get(url=f"{BASE_URL}/api/teacher")
 
     assert response.status_code in [401, 403], \

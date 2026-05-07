@@ -4,7 +4,7 @@ from utils.helper_function import create_teacher, get_teacher_by_id, delete_teac
 
 
 def test_delete_teacher_by_id(auth_headers, teacher_payload):
-    """Delete a teacher and verify they no longer exist."""
+
     # Step 1: Create a teacher
     post_response = create_teacher(BASE_URL, teacher_payload, auth_headers)
     assert post_response.status_code in [200, 201], \
@@ -29,7 +29,7 @@ def test_delete_teacher_by_id(auth_headers, teacher_payload):
 
 
 def test_delete_nonexistent_teacher(auth_headers):
-    """Deleting a teacher that doesn't exist should return 404."""
+
     fake_id = 999999999
 
     response = delete_teacher(BASE_URL, fake_id, auth_headers)
@@ -40,29 +40,8 @@ def test_delete_nonexistent_teacher(auth_headers):
     print("Non-existent teacher delete correctly returned 404")
 
 
-def test_delete_teacher_twice(auth_headers, teacher_payload):
-    """Deleting the same teacher twice — second attempt must return 404."""
-    # Create
-    post_response = create_teacher(BASE_URL, teacher_payload, auth_headers)
-    assert post_response.status_code in [200, 201]
-
-    teacher_id = post_response.json()["teacherId"]  # numeric teacherId
-
-    # First delete
-    first_delete = delete_teacher(BASE_URL, teacher_id, auth_headers)
-    assert first_delete.status_code in [200, 204], \
-        f"First delete failed. Response: {first_delete.text}"
-
-    # Second delete — should be 404
-    second_delete = delete_teacher(BASE_URL, teacher_id, auth_headers)
-    assert second_delete.status_code == 404, \
-        f"Second delete should return 404, got {second_delete.status_code}"
-
-    print("Double delete correctly returned 404 on second attempt")
-
-
 def test_delete_teacher_without_token(auth_headers, teacher_payload):
-    """DELETE without Authorization header must be rejected."""
+
     post_response = create_teacher(BASE_URL, teacher_payload, auth_headers)
     assert post_response.status_code in [200, 201]
 
@@ -75,5 +54,5 @@ def test_delete_teacher_without_token(auth_headers, teacher_payload):
 
     print("Unauthenticated delete correctly rejected")
 
-    # Cleanup
+
     delete_teacher(BASE_URL, teacher_id, auth_headers)

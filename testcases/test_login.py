@@ -1,9 +1,9 @@
+import pytest
 import requests
 from utils.config import BASE_URL
 
 
-def test_valid_login_returns_token(login_data):
-    """Valid credentials should return a 200 and a token."""
+def test_valid_login_get_token(login_data):
     response = requests.post(url=f"{BASE_URL}/login", json=login_data)
 
     # Status code check
@@ -14,11 +14,10 @@ def test_valid_login_returns_token(login_data):
     assert token is not None, "Auth token not found in response"
     assert len(token) > 10, "Token looks too short to be valid"
 
-    print(f"Token received: {token[:20]}...")
+    print(f"Token received: {token[:20]}")
 
 
 def test_invalid_password_is_rejected():
-    """Wrong password must not return a token."""
     payload = {
         "username": "admin@example.com",
         "password": "WRONG_PASSWORD_123"

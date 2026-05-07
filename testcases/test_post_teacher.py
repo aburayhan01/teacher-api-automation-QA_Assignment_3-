@@ -1,10 +1,10 @@
+import pytest
 import requests
 from utils.config import BASE_URL
 from utils.helper_function import create_teacher, get_all_teachers, delete_teacher
 
 
 def test_create_teacher(auth_headers, teacher_payload):
-    """Happy path — create teacher with all valid fields."""
     response = create_teacher(BASE_URL, teacher_payload, auth_headers)
 
     assert response.status_code in [200, 201], \
@@ -19,14 +19,12 @@ def test_create_teacher(auth_headers, teacher_payload):
     assert response_data["teacherId"] == teacher_payload["teacherId"]
     assert response_data["designation"] == teacher_payload["designation"]
 
-    # Cleanup
     teacher_id = response_data.get("_id")
     if teacher_id:
         delete_teacher(BASE_URL, teacher_id, auth_headers)
 
 
 def test_created_teacher_exists_in_list(auth_headers, teacher_payload):
-    """After creating a teacher, their email should appear in GET /api/teacher list."""
     post_response = create_teacher(BASE_URL, teacher_payload, auth_headers)
 
     assert post_response.status_code in [200, 201], \
@@ -47,13 +45,12 @@ def test_created_teacher_exists_in_list(auth_headers, teacher_payload):
 
     print(f"Teacher with email {created_email} found in the list")
 
-    # Cleanup
+
     if teacher_id:
         delete_teacher(BASE_URL, teacher_id, auth_headers)
 
 
 def test_create_teacher_missing_name(auth_headers, teacher_payload):
-    """Missing 'name' field should return a validation error."""
     teacher_payload.pop("name")
 
     response = create_teacher(BASE_URL, teacher_payload, auth_headers)
@@ -65,7 +62,6 @@ def test_create_teacher_missing_name(auth_headers, teacher_payload):
 
 
 def test_create_teacher_invalid_email(auth_headers, teacher_payload):
-    """Invalid email format should be rejected."""
     teacher_payload["email"] = "not-a-valid-email@@bad"
 
     response = create_teacher(BASE_URL, teacher_payload, auth_headers)
@@ -77,7 +73,6 @@ def test_create_teacher_invalid_email(auth_headers, teacher_payload):
 
 
 def test_create_teacher_without_token(teacher_payload):
-    """Request without Authorization header must be rejected."""
     response = requests.post(
         url=f"{BASE_URL}/api/teacher",
         json=teacher_payload
