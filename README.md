@@ -1,9 +1,10 @@
 # Teacher Management API Automation Framework
 
-[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/downloads/)
-[![Pytest](https://img.shields.io/badge/Tested%20with-Pytest-yellow.svg)](https://docs.pytest.org/)
-[![Allure](https://img.shields.io/badge/Report-Allure-brightgreen.svg)](https://docs.qameta.io/allure/)
-[![Requests](https://img.shields.io/badge/Library-Requests-orange.svg)](https://requests.readthedocs.io/)
+[![Python Version](https://img.shields.io/badge/Python-3.9%2B-1E90FF?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Framework](https://img.shields.io/badge/Framework-Pytest-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white)](https://docs.pytest.org/)
+[![API Testing](https://img.shields.io/badge/API-Testing-FF6F00?style=for-the-badge&logo=fastapi&logoColor=white)](https://requests.readthedocs.io/)
+[![Reporting](https://img.shields.io/badge/Allure-Report-E40046?style=for-the-badge&logo=testinglibrary&logoColor=white)](https://docs.qameta.io/allure/)
+[![Automation Level](https://img.shields.io/badge/Test%20Automation-Advanced-2ECC71?style=for-the-badge)]()
 
 ## Project Overview
 
